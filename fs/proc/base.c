@@ -2067,7 +2067,25 @@ struct timers_private {
 
 static void *timers_start(struct seq_file *m, loff_t *pos)
 {
+<<<<<<< HEAD
 	struct timers_private *tp = m->private;
+=======
+	struct task_struct *p;
+	int rv;
+
+	rv = generic_permission(inode, mask);
+	if (rv == 0)
+		return rv;
+
+	rcu_read_lock();
+	p = pid_task(proc_pid(inode), PIDTYPE_PID);
+	if (p && same_thread_group(p, current))
+		rv = 0;
+	rcu_read_unlock();
+
+	return rv;
+}
+>>>>>>> 6b34ba9... UPSTREAM: proc: actually make proc_fd_permission() thread-friendly
 
 	tp->task = get_pid_task(tp->pid, PIDTYPE_PID);
 	if (!tp->task)
