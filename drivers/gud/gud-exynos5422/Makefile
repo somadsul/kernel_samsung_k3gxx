@@ -7,6 +7,7 @@
 GUD_ROOT_FOLDER := $(srctree)/drivers/gud/gud-exynos5422
 ##################################
 # add our modules to kernel.
+obj-$(CONFIG_MOBICORE_API) += mcKernelApi.o
 obj-$(CONFIG_MOBICORE_DRIVER) += mcDrvModule.o
 
 mcDrvModule-objs := MobiCoreDriver/logging.o \
