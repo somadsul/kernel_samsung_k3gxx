@@ -121,7 +121,7 @@ static void notify_netlink_uevent(const char *label, struct idletimer_tg *timer)
 	char state_msg[NLMSG_MAX_SIZE];
 	char timestamp_msg[NLMSG_MAX_SIZE];
 	char uid_msg[NLMSG_MAX_SIZE];
-	char *envp[] = { iface_msg, state_msg, timestamp_msg, uid_msg, NULL };
+	char *envp[] = { label_msg, state_msg, timestamp_msg, uid_msg, NULL };
     int res;
 	struct timespec ts;
 	uint64_t time_ns;
@@ -160,7 +160,7 @@ static void notify_netlink_uevent(const char *label, struct idletimer_tg *timer)
 		pr_err("message too long (%d)", res);
 	}
 
-	pr_debug("putting nlmsg: <%s> <%s> <%s> <%s>\n", iface_msg, state_msg,
+	pr_debug("putting nlmsg: <%s> <%s> <%s> <%s>\n", label_msg, state_msg,
 		 timestamp_msg, uid_msg);
 	kobject_uevent_env(idletimer_tg_kobj, KOBJ_CHANGE, envp);
 	return;
@@ -215,7 +215,7 @@ static void idletimer_tg_work(struct work_struct *work)
 
 	sysfs_notify(idletimer_tg_kobj, NULL, timer->attr.attr.name);
 
-	if (timer->send_nl_msg)
+	 if (timer && timer->send_nl_msg)
 		notify_netlink_uevent(timer->attr.attr.name, timer);
 }
 
